@@ -17,6 +17,18 @@
 
 int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
 	/* =================== PUT YOUR CODE HERE ====================== */
+	Vector3 center = bs->getPosition();
+	float dist=pl->distance(center);
+	float r=bs->getRadius();
+	if (dist>r){
+		int side = pl->whichSide(center);
+		if(side>0){
+			return -IREJECT;
+		}else{
+			return +IREJECT;
+		}
+	}
+	return IINTERSECT;
 
 	/* =================== END YOUR CODE HERE ====================== */
 }
@@ -29,7 +41,7 @@ int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
 
 int  BBoxBBoxIntersect(const BBox *bba, const BBox *bbb ) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
