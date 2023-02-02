@@ -41,7 +41,15 @@ int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
 
 int  BBoxBBoxIntersect(const BBox *bba, const BBox *bbb ) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-	
+	if(bba->m_min[0] <= bbb->m_max[0] &&
+		bba->m_max[0] >= bbb->m_min[0]&&
+		bba->m_min[1] <= bbb->m_max[1] &&
+		bba->m_max[1] >= bbb->m_min[1]&&
+		bba->m_min[2] <= bbb->m_max[2] &&
+		bba->m_max[2] >= bbb->m_min[2]){
+			return IINTERSECT;
+		}
+		return IREJECT;
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -53,7 +61,13 @@ int  BBoxBBoxIntersect(const BBox *bba, const BBox *bbb ) {
 
 int  BBoxPlaneIntersect (const BBox *theBBox, Plane *thePlane) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	Vector3 center= (theBBox->m_max +theBBox->m_min)* 0.5f;
+	Vector3 e= theBBox->m_max - center;
+	float l = e[0]*abs(thePlane->m_n[0])+e[1]*abs(thePlane->m_n[1])+e[2]*abs(thePlane->m_n[2]);
+	float dist=thePlane->m_n.dot(center) - thePlane->m_d;
+	if (abs(dist)<=l){return IINTERSECT;}
+	else if (dist>0){return IREJECT;}
+	return -IREJECT;
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
