@@ -186,12 +186,17 @@ void create_scene_tmesh() {
 
 	mesh = new TriangleMesh;
 
-	float offset = 0;
+	float offset = 0.25;
 
 	mesh->addPoint(Vector3(-0.25, -0.25, -0.25 )); // P0
 	mesh->addPoint(Vector3(0.25, -0.25, -0.25 )); // P1
 	mesh->addPoint(Vector3(0.25, 0.25, -0.25 )); // P2
 	mesh->addPoint(Vector3(-0.25, 0.25, -0.25 )); // P3
+
+	mesh->addPoint(Vector3(-0.25+offset, -0.25+offset, -0.5 )); // P4
+	mesh->addPoint(Vector3(0.25+offset, -0.25+offset, -0.5)); // P5
+	mesh->addPoint(Vector3(0.25+offset, 0.25+offset, -0.5 )); // P6
+	mesh->addPoint(Vector3(-0.25+offset, 0.25+offset, -0.5 )); // P7
 
 	// front
 	mesh->addTriangle(0, 1, 2); // P0 - P1 - P2
@@ -200,7 +205,23 @@ void create_scene_tmesh() {
 	/* =================== PUT YOUR CODE HERE ====================== */
 	// Complete the triangle mesh with the vertices and triangles that
 	// form a 3D cube.
+	mesh->addTriangle(0, 1, 2);
+	mesh->addTriangle(0, 1, 2);
 
+	mesh->addTriangle(5, 4, 7);
+	mesh->addTriangle(7, 6, 5);
+
+	mesh->addTriangle(1, 5, 6);
+	mesh->addTriangle(6, 2,1);
+
+	mesh->addTriangle(4,0,3);
+	mesh->addTriangle(3,7,4);
+
+	mesh->addTriangle(3,2,6);
+	mesh->addTriangle(6,7,3);
+
+	mesh->addTriangle(4,5,1);
+	mesh->addTriangle(1,0,4);
 	/* =================== END YOUR CODE HERE ====================== */
 
 	GObject *gObj = GObjectManager::instance()->create("MG_CUBE");
