@@ -1,6 +1,4 @@
 // -*-C++-*-
-//FerniGG
-//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
 #pragma once
 
 #include <GL/glew.h>
