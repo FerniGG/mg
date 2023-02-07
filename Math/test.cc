@@ -1,10 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "constants.h"
 #include "line.h"
 #include "plane.h"
 #include "bbox.h"
 #include "bsphere.h"
 #include "intersect.h"
+#include "trfm3D.h"
 
 ////// WARNING !!! IREJECT == 1 // IINTERSECT == 0
 void pause() {
@@ -13,14 +15,14 @@ void pause() {
 }
 
 // Vector3
-void imprimeVector3(const char *texto, const Vector3 &v) {
-	printf("      %s", texto); v.print(); printf("\n");
+void printVector3(const char *text, const Vector3 &v) {
+	printf("      %s", text); v.print(); printf("\n");
 }
 
-Vector3 getVector3(const char *texto) {
+Vector3 getVector3(const char *text) {
 	float vx, vy, vz;
 
-	printf(" %s:", texto); scanf("%f, %f, %f", &vx, &vy, &vz); printf("\n");
+	printf(" %s:", text); scanf("%f, %f, %f", &vx, &vy, &vz); printf("\n");
 
 	getchar();
 
@@ -29,15 +31,15 @@ Vector3 getVector3(const char *texto) {
 
 
 // Bounding Box
-void imprimeBBox(const char *texto, const BBox *bb) {
-	printf("      %s:", texto); bb->print(); printf("\n");
+void printBBox(const char *text, const BBox *bb) {
+	printf("      %s:", text); bb->print(); printf("\n");
 }
 
-BBox * getBBox(const char *texto) {
+BBox * getBBox(const char *text) {
 	float xmin, ymin, zmin, xmax, ymax, zmax;
 	BBox *bb;
 
-	printf("\n  %s", texto);
+	printf("\n  %s", text);
 	printf("\n"); printf("  Min (xmin, ymin, zmin):"); scanf("%f, %f, %f", &xmin, &ymin, &zmin);
 	printf("\n"); printf("  Max (xmax, ymax, zmax):"); scanf("%f, %f, %f", &xmax, &ymax, &zmax);
 	printf("\n");
@@ -50,17 +52,17 @@ BBox * getBBox(const char *texto) {
 }
 
 // Plane
-void imprimePlane (const char *texto, const Plane *p) {
-	printf("      %s:", texto);
+void printPlane (const char *text, const Plane *p) {
+	printf("      %s:", text);
 	printf("  Normal nx, ny, nz: %f, %f, %f  d: %f", p->m_n[0], p->m_n[1], p->m_n[2], p->m_d);
 	printf("\n");
 }
 
-Plane * getPlane (const char *texto) {
+Plane * getPlane (const char *text) {
 	float nx, ny, nz, d;
 	Plane *p;
 
-	printf("\n  %s", texto);
+	printf("\n  %s", text);
 	printf("\n"); printf("  Normal nx, ny, nz:"); scanf("%f, %f, %f", &nx, &ny, &nz);
 	printf("\n"); printf("  d:"); scanf("%f", &d);
 	printf("\n");
@@ -73,17 +75,17 @@ Plane * getPlane (const char *texto) {
 }
 
 // Sphere
-void imprimeSphere (const char *texto, const BSphere *bs) {
-	printf("      %s:", texto);
+void printSphere (const char *text, const BSphere *bs) {
+	printf("      %s:", text);
 	printf("  Center cx, cy, cz: %f, %f, %f  Radius: %f", bs->m_centre[0], bs->m_centre[1], bs->m_centre[2], bs->m_radius);
 	printf("\n");
 }
 
-BSphere * getSphere (const char *texto) {
+BSphere * getSphere (const char *text) {
 	float cx, cy, cz, r;
 	BSphere *bs;
 
-	printf("\n  %s", texto);
+	printf("\n  %s", text);
 	printf("\n"); printf("  Center cx, cy, cz:"); scanf("%f, %f, %f", &cx, &cy, &cz);
 	printf("\n"); printf("  Radius r:"); scanf("%f", &r);
 	printf("\n");
@@ -111,7 +113,7 @@ void caseLine1(const Vector3 & A, const Vector3 & B, const Vector3 & P) {
 
 	printf("\n");
 	printf(" Result for line:\n");
-	imprimeVector3("A", A); imprimeVector3("B", B); imprimeVector3("Point", P);
+	printVector3("A", A); printVector3("B", B); printVector3("Point", P);
 	printf("\n The line: ");
 	linea.print();
 	printf("      u = %.3f       distance = %.3f\n", u, d);
@@ -119,33 +121,33 @@ void caseLine1(const Vector3 & A, const Vector3 & B, const Vector3 & P) {
 }
 
 void caseLine2() {
-	Line linea;
+	Line l;
 
 	// Line
 	Vector3 O = getVector3("O");
 	Vector3 D = getVector3("Dx, Dy, Dz:");
-	linea.setFromAtoB(O, D);
+	l.setFromAtoB(O, D);
 
 	// Point
 	Vector3 P = getVector3("Px, Py, Pz:");
 
-	float u = linea.paramDistance(P);
-	float d = linea.distance(P);
+	float u = l.paramDistance(P);
+	float d = l.distance(P);
 
 	printf("\n");
 	printf(" Result for line:\n");
-	imprimeVector3("O", O); imprimeVector3("D", D); imprimeVector3("Point", P);
+	printVector3("O", O); printVector3("D", D); printVector3("Point", P);
 	printf("\n The line: ");
-	linea.print();
+	l.print();
 	printf("      u = %.3f       distance = %.3f\n", u, d);
 
 	pause();
 }
 
 void menuLine() {
-	int fin = 0;
-	int opcion;
-	while (fin == 0){
+	int end = 0;
+	int option;
+	while (end == 0){
 		system("clear");
 		printf ("**************************************\n");
 		printf ("*** Test Distance from point to line\n");
@@ -158,9 +160,9 @@ void menuLine() {
 		printf(" 5. Enter data\n");
 		printf(" 6. Main menu\n\n");
 		printf(" Enter your choice: ");
-		scanf("%d", &opcion); getchar();
+		scanf("%d", &option); getchar();
 
-		switch( opcion ) {
+		switch( option ) {
 		case 1:
 			caseLine1(Vector3(0.0, 0.0, 0.0),
 					  Vector3(1.0, 1.0, 0.0),
@@ -185,7 +187,7 @@ void menuLine() {
 			caseLine2();
 			break;
 		case 6:
-			fin = 1;
+			end = 1;
 			break;
 		default:
 			printf("Please enter a number between 1 and 6\n");
@@ -205,8 +207,8 @@ void caseAABBs(const BBox *bb1, const BBox *bb2) {
 	result = BBoxBBoxIntersect(bb1, bb2);
 
 	printf("\n Result for BBox-BBox:\n");
-	imprimeBBox("BBox1", bb1);
-	imprimeBBox("BBox2", bb2);
+	printBBox("BBox1", bb1);
+	printBBox("BBox2", bb2);
 	printf("      Intersect = %s\n", intersect_string(result));
 }
 
@@ -240,9 +242,9 @@ void caseAABBs2() {
 }
 
 void menuAABBs() {
-	int fin = 0;
-	int opcion;
-	while (fin == 0){
+	int end = 0;
+	int option;
+	while (end == 0){
 		system("clear");
 		printf ("**************************************\n");
 		printf ("*** Test intersect AABB-AABB\n");
@@ -256,9 +258,9 @@ void menuAABBs() {
 		printf(" 6. Enter data\n");
 		printf(" 7. Main menu\n\n");
 		printf(" Enter your choice: ");
-		scanf("%i", &opcion); getchar();
+		scanf("%i", &option); getchar();
 
-		switch(opcion) {
+		switch(option) {
 		case 1:
 			caseAABBs1(Vector3(0.0, 0.0, 0.0),
 					   Vector3(1.0, 1.0, 1.0),
@@ -293,7 +295,7 @@ void menuAABBs() {
 			caseAABBs2();
 			break;
 		case 7:
-			fin = 1;
+			end = 1;
 			break;
 		default:
 			printf("Please enter a number between 1 and 6\n");
@@ -314,8 +316,8 @@ void caseAABBplane(const BBox *bb, Plane *p) {
 
 	printf("\n");
 	printf(" Result for AABB-plane:\n");
-	imprimeBBox("BBox", bb);
-	imprimePlane("Plane", p);
+	printBBox("BBox", bb);
+	printPlane("Plane", p);
 	printf("      Intersect = %s\n", intersect_string(result));
 }
 
@@ -353,9 +355,9 @@ void caseAABBplane2() {
 }
 
 void menuAABBplane() {
-	int fin = 0;
-	int opcion;
-	while (fin == 0){
+	int end = 0;
+	int option;
+	while (end == 0){
 		system("clear");
 		printf ("**************************************\n");
 		printf ("*** Test intersect AABB-Plane\n");
@@ -370,9 +372,9 @@ void menuAABBplane() {
 		printf(" 7. Enter data\n");
 		printf(" 8. Main menu\n\n");
 		printf(" Enter your choice: ");
-		scanf("%i", &opcion); getchar();
+		scanf("%i", &option); getchar();
 
-		switch(opcion) {
+		switch(option) {
 		case 1:
 			caseAABBplane1(Vector3(0.0, 0.0, 0.0),
 						   Vector3(1.0, 1.0, 1.0),
@@ -413,7 +415,7 @@ void menuAABBplane() {
 			caseAABBplane2();
 			break;
 		case 8:
-			fin = 1;
+			end = 1;
 			break;
 		default:
 			printf("Please enter a number between 1 and 6\n");
@@ -434,8 +436,8 @@ void caseSpheres(const BSphere *bs1, const BSphere *bs2) {
 
 	printf("\n");
 	printf(" Result for Sphere-Sphere:\n");
-	imprimeSphere("Sphere1", bs1);
-	imprimeSphere("Sphere2", bs2);
+	printSphere("Sphere1", bs1);
+	printSphere("Sphere2", bs2);
 	printf("      Intersect = %s\n", intersect_string(result));
 }
 
@@ -468,9 +470,9 @@ void caseSpheres2() {
 }
 
 void menuSpheres() {
-	int fin = 0;
-	int opcion;
-	while (fin == 0){
+	int end = 0;
+	int option;
+	while (end == 0){
 		system("clear");
 		printf ("**************************************\n");
 		printf ("*** Test intersect Sphere-Sphere\n");
@@ -484,9 +486,9 @@ void menuSpheres() {
 		printf(" 6. Enter data\n");
 		printf(" 7. Main menu\n\n");
 		printf(" Enter your choice: ");
-		scanf("%i", &opcion); getchar();
+		scanf("%i", &option); getchar();
 
-		switch(opcion) {
+		switch(option) {
 		case 1:
 			caseSpheres1(Vector3(0.0, 0.0, 0.0), 1.0,
 						 Vector3(0.5, 1.0, 1.0), 1.0);
@@ -511,7 +513,7 @@ void menuSpheres() {
 			caseSpheres2();
 			break;
 		case 7:
-			fin = 1;
+			end = 1;
 			break;
 		default:
 			printf("Please enter a number between 1 and 6\n");
@@ -531,8 +533,8 @@ void caseSpherePlane(const BSphere *bs, Plane *p) {
 	result = BSpherePlaneIntersect(bs, p);
 	printf("\n");
 	printf(" Result for Sphere-Plane:\n");
-	imprimeSphere("Sphere", bs);
-	imprimePlane("Plane", p);
+	printSphere("Sphere", bs);
+	printPlane("Plane", p);
 	printf("      Intersect = %s\n", intersect_string(result));
 }
 
@@ -570,9 +572,9 @@ void caseSpherePlane2 (){
 }
 
 void menuSpherePlane() {
-	int fin = 0;
-	int opcion;
-	while (fin == 0){
+	int end = 0;
+	int option;
+	while (end == 0){
 		system("clear");
 		printf ("**************************************\n");
 		printf ("*** Test intersect Sphere-Plane\n");
@@ -586,9 +588,9 @@ void menuSpherePlane() {
 		printf(" 6. Enter data\n");
 		printf(" 7. Main menu\n\n");
 		printf(" Enter your choice: ");
-		scanf("%i", &opcion); getchar();
+		scanf("%i", &option); getchar();
 
-		switch(opcion) {
+		switch(option) {
 		case 1:
 			caseSpherePlane1(Vector3(0.0, 0.0, 0.0), 1.0,
 							 Vector3(4.0, -4.0, 0.0), 0.0);
@@ -613,7 +615,7 @@ void menuSpherePlane() {
 			caseSpherePlane2();
 			break;
 		case 7:
-			fin = 1;
+			end = 1;
 			break;
 
 		default:
@@ -635,8 +637,8 @@ void caseSphereAABB(const BSphere *bs, const BBox *bb) {
 	result = BSphereBBoxIntersect(bs, bb);
 	printf("\n");
 	printf(" Result for Sphere-AABB:\n");
-	imprimeSphere("Sphere", bs);
-	imprimeBBox("AABB", bb);
+	printSphere("Sphere", bs);
+	printBBox("AABB", bb);
 	printf("      Intersect = %s\n", intersect_string(result));
 
 }
@@ -674,9 +676,9 @@ void caseSphereAABB2() {
 }
 
 void menuSphereAABB() {
-	int fin = 0;
-	int opcion;
-	while (fin == 0){
+	int end = 0;
+	int option;
+	while (end == 0){
 		system("clear");
 		printf ("**************************************\n");
 		printf ("*** Test intersect Sphere-AABB\n");
@@ -690,9 +692,9 @@ void menuSphereAABB() {
 		printf(" 6. Enter data\n");
 		printf(" 7. Main menu\n\n");
 		printf(" Enter your choice: ");
-		scanf("%i", &opcion); getchar();
+		scanf("%i", &option); getchar();
 
-		switch(opcion) {
+		switch(option) {
 		case 1:
 			caseSphereAABB1(Vector3(0.0, 0.0, 0.0), 1.0,
 							Vector3(0.0, 0.0, 0.0),
@@ -722,7 +724,7 @@ void menuSphereAABB() {
 			caseSphereAABB2();
 			break;
 		case 7:
-			fin = 1;
+			end = 1;
 			break;
 		default:
 			printf("Please enter a number between 1 and 6\n");
@@ -731,16 +733,107 @@ void menuSphereAABB() {
 	}
 }
 
+void printTrfmResult(const std::string & text,
+					 const Vector3 &X, const Vector3 &Y,
+					 const std::string &result) {
+	printf("%s\n", text.c_str());
+	printf("Good result: %s\n", result.c_str());
+	printf("Your result: ");Y.print(); printf("\n");
+	pause();
+}
+
+void menuTrfm() {
+	int end = 0;
+	int option;
+	Vector3 X, Y;
+	Trfm3D T;
+	while (end == 0){
+		system("clear");
+		printf ("**************************************\n");
+		printf ("*** Test transformations\n");
+		printf ("**************************************\n\n");
+
+		printf(" 1. Point{1,1,1}, Tr(1,1,1)\n");
+		printf(" 2. Point{1,1,1}, Tr(1,1,1)*R_x(-pi/2)\n");
+		printf(" 3. Point{1,1,1}, Tr(1,1,1)*R_x(-pi/2)*S(1/2,1/2,1/2)\n");
+		printf(" 4. Vector{1,1,1}, Tr(1,1,1)\n");
+		printf(" 5. Vector{1,1,1}, Tr(1,1,1)*R_x(-pi/2)\n");
+		printf(" 6. Vector{1,1,1}, Tr(1,1,1)*R_x(-pi/2)*S(1/2,1/2,1/2)\n");
+		printf(" 7. Main menu\n\n");
+		printf(" Enter your choice: ");
+		scanf("%i", &option); getchar();
+
+		switch(option) {
+		case 1:
+			X = Vector3(1,1,1);
+			T.setTrans(Vector3(1,1,1));
+			Y = T.transformPoint(X);
+			//Result:(2.0000, 2.0000, 2.0000)
+			printTrfmResult("Point{1,1,1}; Transf: Tr(1,1,1)", X, Y, "(2.0000, 2.0000, 2.0000)");
+			break;
+		case 2:
+			X = Vector3(1,1,1);
+			T.setTrans(Vector3(1,1,1));
+			T.addRotX(-Constants::pi/2.0);
+			Y = T.transformPoint(X);
+			// Result:(2.0000, 2.0000, 0.0000)
+			printTrfmResult("Point{1,1,1}; Transf: Tr(1,1,1)*R_x(-pi/2)", X, Y, "(2.0000, 2.0000, 0.0000)");
+			break;
+		case 3:
+			X = Vector3(1,1,1);
+			T.setTrans(Vector3(1,1,1));
+			T.addRotX(-Constants::pi/2.0);
+			T.addScale(0.5);
+			Y = T.transformPoint(X);
+			//Result:(1.5000, 1.5000, 0.5000)
+			printTrfmResult("Point{1,1,1}; Transf: Tr(1,1,1)*R_x(-pi/2)*S(1/2,1/2,1/2)", X, Y, "(1.5000, 1.5000, 0.5000)");
+			break;
+		case 4:
+			X = Vector3(1,1,1);
+			T.setTrans(Vector3(1,1,1));
+			Y = T.transformVector(X);
+			// Result:(1.0000, 1.0000, 1.0000)
+			printTrfmResult("Vector{1,1,1}; Transf: Tr(1,1,1)", X, Y, "(1.0000, 1.0000, 1.0000)");
+			break;
+		case 5:
+			X = Vector3(1,1,1);
+			T.setTrans(Vector3(1,1,1));
+			T.addRotX(-Constants::pi/2.0);
+			Y = T.transformVector(X);
+			// Result:(1.0000, 1.0000, -1.0000)
+			printTrfmResult("Vector{1,1,1}; Transf: Tr(1,1,1)*R_x(-pi/2)", X, Y, "(1.0000, 1.0000, -1.0000)");
+			break;
+		case 6:
+			X = Vector3(1,1,1);
+			T.setTrans(Vector3(1,1,1));
+			T.addRotX(-Constants::pi/2.0);
+			T.addScale(0.5);
+			Y = T.transformVector(X);
+			// Result:(0.5000, 0.5000, -0.5000)
+			printTrfmResult("Vector{1,1,1}; Transf: Tr(1,1,1)*R_x(-pi/2)*S(1/2,1/2,1/2)", X, Y, "(0.5000, 0.5000, -0.5000)");
+			break;
+		case 7:
+			end = 1;
+			break;
+		default:
+			printf("Please enter a number between 1 and 7\n");
+			break;
+		}
+	}
+}
+
+
+
 //***************************************************
 //***
 //*** MENU PRINCIPAL
 //***
 //***************************************************
 void mainMenu() {
-	int fin = 0;
-	int opcion;
+	int end = 0;
+	int option;
 
-	while (fin == 0){
+	while (end == 0){
 		system("clear");
 		printf(" 1. Distance from point to  line\n");
 		printf(" 2. Test intersect AABB-AABB\n");
@@ -748,11 +841,12 @@ void mainMenu() {
 		printf(" 4. Test intersect Spheres\n");
 		printf(" 5. Test intersect Sphere-plane\n");
 		printf(" 6. Test intersect Sphere-AABB\n");
-		printf(" 7. Exit\n\n");
+		printf(" 7. Test point and vector transformations\n");
+		printf(" 8. Exit\n\n");
 		printf(" Enter your choice: ");
-		scanf("%d", &opcion); getchar();
+		scanf("%d", &option); getchar();
 
-		switch(opcion) {
+		switch(option) {
 		case 1:
 			menuLine();
 			break;
@@ -772,7 +866,10 @@ void mainMenu() {
 			menuSphereAABB();
 			break;
 		case 7:
-			fin = 1;
+			menuTrfm();
+			break;
+		case 8:
+			end = 1;
 			break;
 		default:
 			printf("Please enter a number between 1 and 7\n");

@@ -47,7 +47,16 @@ void Trfm3D::clone( const Trfm3D *T ) {	clone(*T); }
 Vector3 Trfm3D::transformPoint(const Vector3 & P) const {
 	Vector3 res;
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	res[0]=P[0]*this->m_c1[0]+P[1]*this->m_c1[1]+P[2]*this->m_c1[2]+0;
+	res[1]=P[0]*this->m_c2[0]+P[1]*this->m_c2[1]+P[2]*this->m_c2[2]+0;
+	res[2]=P[0]*this->m_c3[0]+P[1]*this->m_c3[1]+P[2]*this->m_c3[2]+0;
+	float w=P[0]*this->m_d[0]+P[1]*this->m_d[1]+P[2]*this->m_d[2]+1;
+	w=1;
+	if (w != 1 && w != 0) {
+    res[0] /= w;
+	res[1] /= w;
+	res[2] /= w;
+}
 	/* =================== END YOUR CODE HERE ====================== */
 	return res;
 }
