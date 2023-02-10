@@ -271,12 +271,13 @@ void Node::addChild(Node *theChild) {
 	if (m_gObject) {
 		/* =================== PUT YOUR CODE HERE ====================== */
 		// node has a gObject, so print warning
-
+		printf("WARNING:current node already has a m_gObject");
 		/* =================== END YOUR CODE HERE ====================== */
 	} else {
 		/* =================== PUT YOUR CODE HERE ====================== */
 		// node does not have gObject, so attach child
-
+		this->addChild(theChild);
+		theChild->m_parent=this;
 		/* =================== END YOUR CODE HERE ====================== */
 
 	}
@@ -420,7 +421,9 @@ void Node::draw() {
 		BBoxGL::draw( m_containerWC);
 	}
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	rs->push(RenderState::modelview);
+	rs->addTrfm(RenderState::modelview,m_placement);
+	 	
 	/* =================== END YOUR CODE HERE ====================== */
 
 	if (prev_shader != 0) {
