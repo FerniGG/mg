@@ -47,10 +47,9 @@ void Trfm3D::clone( const Trfm3D *T ) {	clone(*T); }
 Vector3 Trfm3D::transformPoint(const Vector3 & P) const {
 	Vector3 res;
 	/* =================== PUT YOUR CODE HERE ====================== */
-	res[0]=P[0]+m_tr[0];
-	res[1]=P[1]+m_tr[1];
-	res[2]=P[2]+m_tr[2];
-	float w=1;
+	res[0]=P[0]*this->m_c1[0]*m_scl+P[1]*this->m_c2[0]*m_scl+P[2]*this->m_c3[0]*m_scl+1*m_tr[0];
+	res[1]=P[0]*this->m_c1[1]*m_scl+P[1]*this->m_c2[1]*m_scl+P[2]*this->m_c3[1]*m_scl+1*m_tr[1];
+	res[2]=P[0]*this->m_c1[2]*m_scl+P[1]*this->m_c2[2]*m_scl+P[2]*this->m_c3[2]*m_scl+1*m_tr[2];
 	
 	/* =================== END YOUR CODE HERE ====================== */
 	return res;
@@ -67,10 +66,9 @@ Vector3 Trfm3D::transformPoint(const Vector3 & P) const {
 Vector3 Trfm3D::transformVector(const Vector3 & V) const {
 	Vector3 res;
 	/* =================== PUT YOUR CODE HERE ====================== */
-	res[0]=V[0]*m_tr[0];
-	res[1]=V[1]*m_tr[1];
-	res[2]=V[2]*m_tr[2];
-	float w=0;
+	res[0]=V[0]*this->m_c1[0]*m_scl+V[1]*this->m_c2[0]*m_scl+V[2]*this->m_c3[0]*m_scl+0*m_tr[0];
+	res[1]=V[0]*this->m_c1[1]*m_scl+V[1]*this->m_c2[1]*m_scl+V[2]*this->m_c3[1]*m_scl+0*m_tr[1];
+	res[2]=V[0]*this->m_c1[2]*m_scl+V[1]*this->m_c2[2]*m_scl+V[2]*this->m_c3[2]*m_scl+0*m_tr[2];
 	/* =================== END YOUR CODE HERE ====================== */
 	return res;
 }
@@ -425,28 +423,15 @@ void Trfm3D::setScale(float scale ) {
 
 void Trfm3D::setRotAxis(const Vector3 & V, const Vector3 & P, float angle ) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-	Vector3 Z;
-	Vector3 Vxz;
+	Trfm3D m;
+	Vector3 minusP;
+	minusP[0]=-P[0];
+	minusP[1]=-P[1];
+	minusP[2]=-P[2];
+	m.setTrans(P);
+	m.addRotVec(V,angle);
+	m.addTrans(minusP);
 
-	Vxz[0] = V[0];
-	Vxz[1] = 0;
-	Vxz[2] = V[2];
-	Z[0] = 0;
-	Z[1]=0;
-	Z[2]=1;
-	float alpha=acos(Z.dot(Vxz))/sqrt(Z.length()*Vxz.length());;
-	float beta=acos(V.dot(Vxz))/sqrt(V.length()*Vxz.length());
-	this->addRotY(-alpha);
-	this->addRotX(beta);
-	this->addRotZ(angle);
-	this->addRotX(-beta);
-	this->addRotY(alpha);
-	
-	// this->addRotY(alpha);
-	// this->addRotX(-beta);
-	// this->addRotZ(angle);
-	// this->addRotX(beta);
-	// this->addRotY(-alpha);
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
