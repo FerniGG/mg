@@ -420,12 +420,33 @@ void Trfm3D::setScale(float scale ) {
 	m_w  = 1.0f;
 }
 
-// @@ TODO: Rotate angle radians about an axis defined by vector and located at point
+// @@ TODO: Rotate angle radians about an a[[xis defined by vector and located at point
 //
 
 void Trfm3D::setRotAxis(const Vector3 & V, const Vector3 & P, float angle ) {
 	/* =================== PUT YOUR CODE HERE ====================== */
+	Vector3 Z;
+	Vector3 Vxz;
+
+	Vxz[0] = V[0];
+	Vxz[1] = 0;
+	Vxz[2] = V[2];
+	Z[0] = 0;
+	Z[1]=0;
+	Z[2]=1;
+	float alpha=acos(Z.dot(Vxz))/sqrt(Z.length()*Vxz.length());;
+	float beta=acos(V.dot(Vxz))/sqrt(V.length()*Vxz.length());
+	this->addRotY(-alpha);
+	this->addRotX(beta);
+	this->addRotZ(angle);
+	this->addRotX(-beta);
+	this->addRotY(alpha);
 	
+	// this->addRotY(alpha);
+	// this->addRotX(-beta);
+	// this->addRotZ(angle);
+	// this->addRotX(beta);
+	// this->addRotY(-alpha);
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
