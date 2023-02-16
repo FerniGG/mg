@@ -276,8 +276,8 @@ void Node::addChild(Node *theChild) {
 	} else {
 		/* =================== PUT YOUR CODE HERE ====================== */
 		// node does not have gObject, so attach child
-		this->addChild(theChild);
 		theChild->m_parent=this;
+		this->m_children.push_back(theChild);
 		/* =================== END YOUR CODE HERE ====================== */
 
 	}
@@ -423,7 +423,14 @@ void Node::draw() {
 	/* =================== PUT YOUR CODE HERE ====================== */
 	rs->push(RenderState::modelview);
 	rs->addTrfm(RenderState::modelview,m_placement);
-	 	
+	if (m_gObject){
+		m_gObject->draw();
+	}else{
+		for(auto & theChild : m_children){
+			theChild->draw();
+		}
+	}
+	rs->pop(RenderState::modelview)	;
 	/* =================== END YOUR CODE HERE ====================== */
 
 	if (prev_shader != 0) {
