@@ -276,8 +276,8 @@ int main(int argc, char** argv) {
 	InitShaders();
 	T = new Trfm3D; // global variable
 	// create Scene
-	//create_scene_tmesh();
-	create_regular_polygon(6);
+	create_scene_tmesh();
+	//create_regular_polygon(6);
 	glutMainLoop();
 	delete T;
 	return 0;

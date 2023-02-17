@@ -478,12 +478,12 @@ void mouse(int x, int y) {
 	Camera *theCamera = CameraManager::instance()->find("mainCamera");
 	float s;
 	if (mouse_pre_x >= 0 && (x != mouse_pre_x)) {
-		s = (x - mouse_pre_x) > 0.0 ? -1.0 : +1.0;
+		s = (x - mouse_pre_x) > 0.0 ? -1.0 : 1.0;
 		theCamera->arcLeftRight(s * 0.03f);
 		glutPostRedisplay( );
 	}
 	if (mouse_pre_y >= 0 && (y != mouse_pre_y)) {
-		s = (y - mouse_pre_y) > 0.0 ? -1.0 : +1.0;
+		s = (y - mouse_pre_y) > 0.0 ? -1.0 : 1.0;
 		theCamera->arcOverUnder(s * 0.02f);
 		glutPostRedisplay( );
 	}

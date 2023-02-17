@@ -423,14 +423,10 @@ void Trfm3D::setScale(float scale ) {
 
 void Trfm3D::setRotAxis(const Vector3 & V, const Vector3 & P, float angle ) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-	Trfm3D m;
-	Vector3 minusP;
-	minusP[0]=-P[0];
-	minusP[1]=-P[1];
-	minusP[2]=-P[2];
-	m.setTrans(P);
-	m.addRotVec(V,angle);
-	m.addTrans(minusP);
+
+	this->setTrans(P);
+	this->addRotVec(V,angle);
+	this->addTrans(-1*P);
 
 	/* =================== END YOUR CODE HERE ====================== */
 }
