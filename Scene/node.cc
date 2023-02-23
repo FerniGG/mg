@@ -276,8 +276,11 @@ void Node::addChild(Node *theChild) {
 	} else {
 		/* =================== PUT YOUR CODE HERE ====================== */
 		// node does not have gObject, so attach child
+		if(theChild->parent()!=theChild)
+		theChild->detach();
 		theChild->m_parent=this;
 		this->m_children.push_back(theChild);
+		this->updateGS();
 		/* =================== END YOUR CODE HERE ====================== */
 
 	}
@@ -306,7 +309,9 @@ void Node::detach() {
 
 void Node::propagateBBRoot() {
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	this->updateBB();
+	if(this->m_parent!=0)
+		this->m_parent->propagateBBRoot();
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -339,7 +344,6 @@ void Node::propagateBBRoot() {
 
 void Node::updateBB () {
 	/* =================== PUT YOUR CODE HERE ====================== */
-
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -362,7 +366,13 @@ void Node::updateBB () {
 
 void Node::updateWC() {
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	if (this->m_parent==0){
+		m_placementWC->clone(m_placement);
+	}
+	for(auto & theChild : m_children) {
+		theChild->updateWC();
+	}
+	this->updateBB();
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -376,7 +386,10 @@ void Node::updateWC() {
 
 void Node::updateGS() {
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	this->updateWC();
+	if(this->m_parent!=0){
+		this->m_parent->propagateBBRoot();
+	}
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -403,7 +416,7 @@ void Node::draw() {
 
 	ShaderProgram *prev_shader = 0;
 	RenderState *rs = RenderState::instance();
-
+	
 	for(auto l : m_lights)
 		l->placeScene(rs->top(RenderState::modelview), *m_placementWC);
 
@@ -422,7 +435,7 @@ void Node::draw() {
 	}
 	/* =================== PUT YOUR CODE HERE ====================== */
 	rs->push(RenderState::modelview);
-	rs->addTrfm(RenderState::modelview,m_placement);
+	rs->addTrfm(RenderState::modelview,m_placementWC);
 	if (m_gObject){
 		m_gObject->draw();
 	}else{
