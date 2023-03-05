@@ -276,7 +276,6 @@ void Node::addChild(Node *theChild) {
 	} else {
 		/* =================== PUT YOUR CODE HERE ====================== */
 		// node does not have gObject, so attach child
-		if(theChild->parent()!=theChild)
 		theChild->detach();
 		theChild->m_parent=this;
 		this->m_children.push_back(theChild);
@@ -309,7 +308,7 @@ void Node::detach() {
 
 void Node::propagateBBRoot() {
 	/* =================== PUT YOUR CODE HERE ====================== */
-	this->updateBB();
+	updateBB();
 	if(this->m_parent!=0)
 		this->m_parent->propagateBBRoot();
 	/* =================== END YOUR CODE HERE ====================== */
@@ -344,6 +343,15 @@ void Node::propagateBBRoot() {
 
 void Node::updateBB () {
 	/* =================== PUT YOUR CODE HERE ====================== */
+	m_containerWC->init();
+	if(this->m_gObject){
+		m_containerWC->clone(m_gObject->getContainer());
+		m_containerWC->transform(m_placementWC);
+	}else{
+		for(auto & theChild : m_children) {
+			m_containerWC->include(theChild->m_containerWC);
+	}
+	}
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
@@ -368,8 +376,11 @@ void Node::updateWC() {
 	/* =================== PUT YOUR CODE HERE ====================== */
 	if (this->m_parent==0){
 		m_placementWC->clone(m_placement);
+	}else{
+		m_placementWC->clone(this->m_parent->m_placementWC);
+		m_placementWC->add(m_placement);
 	}
-	for(auto & theChild : m_children) {
+	for(auto & theChild : this->m_children) {
 		theChild->updateWC();
 	}
 	this->updateBB();
@@ -386,7 +397,10 @@ void Node::updateWC() {
 
 void Node::updateGS() {
 	/* =================== PUT YOUR CODE HERE ====================== */
-	this->updateWC();
+	updateWC();
+	for (auto & theChild : this->m_children){
+		theChild->updateWC();
+	}
 	if(this->m_parent!=0){
 		this->m_parent->propagateBBRoot();
 	}
@@ -434,16 +448,18 @@ void Node::draw() {
 		BBoxGL::draw( m_containerWC);
 	}
 	/* =================== PUT YOUR CODE HERE ====================== */
-	rs->push(RenderState::modelview);
-	rs->addTrfm(RenderState::modelview,m_placementWC);
+	
 	if (m_gObject){
+		rs->push(RenderState::modelview);
+		rs->addTrfm(RenderState::modelview,m_placementWC);
 		m_gObject->draw();
+		rs->pop(RenderState::modelview)	;
 	}else{
 		for(auto & theChild : m_children){
 			theChild->draw();
 		}
 	}
-	rs->pop(RenderState::modelview)	;
+	
 	/* =================== END YOUR CODE HERE ====================== */
 
 	if (prev_shader != 0) {
