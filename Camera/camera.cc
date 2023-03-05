@@ -143,6 +143,10 @@ void OrthographicCamera::updateProjection() {
 void PerspectiveCamera::updateProjection() {
 	/* =================== PUT YOUR CODE HERE ====================== */
 	this->m_top=this->m_near*tan(this->m_fovy/2);
+		this->m_top=this->m_near*tan(this->m_fovy/2);
+	this->m_bottom=this->m_top*(-1);
+	this->m_right = this->m_aspectRatio * this->m_top; 
+	this->m_left = this->m_right * (-1)
 	/* =================== END YOUR CODE HERE ====================== */
 	updateFrustumPlanes();
 }
