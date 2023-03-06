@@ -47,8 +47,18 @@ bool Avatar::advance(float step) {
 		m_cam->walk(step);
 	else
 		m_cam->fly(step);
+	
+	this->m_bsph->setPosition(this->m_cam->getPosition());
+	if (rootNode->checkCollision(this->m_bsph)!=0){//Talka badago camera atzera bota
+	printf("TALKAAAAAAAAAAAAAAAAAA");
+		if (this->m_walk)
+			this->m_cam->walk(-step);
+		else
+			this->m_cam->fly(-step);
+		
+		return false;
+	}
 	/* =================== END YOUR CODE HERE ====================== */
-	// no collision
 	return true;
 }
 

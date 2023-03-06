@@ -23,10 +23,12 @@ Line & Line::operator=(const Line & line) {
 
 void Line::setFromAtoB(const Vector3 & A, const Vector3 & B) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-	Vector3 ab= B -A;
-	assert(!ab.isZero());
 	m_O=A;
+	Vector3 ab= B-A;
 	m_d=ab.normalize();
+	if(m_d.isZero()){;	
+		printf("A and B are not too close!");
+	}
 	/* =================== END YOUR CODE HERE ====================== */
 }
 

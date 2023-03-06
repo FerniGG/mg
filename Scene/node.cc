@@ -500,8 +500,16 @@ void Node::frustumCull(Camera *cam) {
 const Node *Node::checkCollision(const BSphere *bsph) const {
 	if (!m_checkCollision) return 0;
 	/* =================== PUT YOUR CODE HERE ====================== */
-
-	return 0; /* No collision */
+		if (BSphereBBoxIntersect(bsph, this->m_containerWC)==IINTERSECT){
+		if (m_gObject){
+			return this;
+		}
+		for(auto & theChild : m_children) {
+			if (theChild->checkCollision(bsph)!=0)
+				return theChild->checkCollision(bsph);
+		}
+	}
+	return 0;
    /* =================== END YOUR CODE HERE ====================== */
 }
 
