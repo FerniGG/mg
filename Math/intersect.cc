@@ -22,13 +22,14 @@ int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
 	float r=bs->getRadius();
 	if (dist>r){
 		int side = pl->whichSide(center);
-		if(side>0){
+		if(side<0){
 			return -IREJECT;
 		}else{
 			return +IREJECT;
 		}
 	}
 	return IINTERSECT;
+
 
 	/* =================== END YOUR CODE HERE ====================== */
 }
