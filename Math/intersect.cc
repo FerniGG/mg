@@ -29,8 +29,6 @@ int BSpherePlaneIntersect(const BSphere *bs, Plane *pl) {
 		}
 	}
 	return IINTERSECT;
-
-
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
