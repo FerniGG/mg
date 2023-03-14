@@ -29,6 +29,8 @@
 
 class RenderState {
 
+private:
+		float m_sc;
 public:
 	static RenderState *instance();
 
@@ -41,6 +43,8 @@ public:
 		modelview_projection
 	};
 
+	float getSc() const;
+	void setSc(float v);
 	///////////////////////////////////////////
 	// Matrix stuff
 

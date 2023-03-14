@@ -502,11 +502,18 @@ void animate(int value) {
 	int currTime = glutGet(GLUT_ELAPSED_TIME);
 	int timeSincePrevFrame = currTime - prevTime;
 	int elapsedTime = currTime - startTime;
-
 	// ##### REPLACE WITH YOUR OWN GAME/APP MAIN CODE HERE #####
+	float angle=RenderState::instance()->getSc();
 	if (runAnimation) {
-		// Force a redisplay to render the new image
+		if(cos(angle)==1.0){
+			angle=0;
+		}else{
+			angle+=10;
+		}
+		RenderState::instance()->setSc(cos(angle));
 
+		// Force a redisplay to render the new image
+		
 		glutPostRedisplay();
 	}
 	// ##### END OF GAME/APP MAIN CODE #####

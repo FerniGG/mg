@@ -77,6 +77,13 @@
             "fshader" : "Shaders/dummy_sc.frag",
 			"uniforms" : [ {"name" : "sc", "type" : "ufloat"} ],
 			"capabilities" : [ "sc" ]
+        },
+        { 
+            "name" : "dummy_sc",
+            "vshader" : "Shaders/dummy_sc.vert",
+            "fshader" : "Shaders/dummy_sc.frag",
+            "uniforms" : [ {"name" : "sc", "type" : "ufloat"} ],
+            "capabilities" : [ "sc" ] 
         }
     ],
     "lights" : [
@@ -150,4 +157,5 @@
             }
         ]
     }
+    
 }
