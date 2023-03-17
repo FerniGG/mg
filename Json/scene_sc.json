@@ -61,6 +61,11 @@
         }
     ],
     "shaders" : [
+        { "name" : "dummy_sc",
+"vshader" : "Shaders/dummy_sc.vert",
+"fshader" : "Shaders/dummy_sc.frag",
+"uniforms" : [ {"name" : "sc", "type" : "ufloat"} ],
+"capabilities" : [ "sc" ] },
         {
             "name" : "dummy",
             "vshader" : "Shaders/dummy.vert",
@@ -70,20 +75,6 @@
             "name" : "pervertex",
             "vshader" : "Shaders/pervertex.vert",
             "fshader" : "Shaders/pervertex.frag"
-        },
-        {
-            "name" : "dummy_sc",
-            "vshader" : "Shaders/dummy_sc.vert",
-            "fshader" : "Shaders/dummy_sc.frag",
-			"uniforms" : [ {"name" : "sc", "type" : "ufloat"} ],
-			"capabilities" : [ "sc" ]
-        },
-        { 
-            "name" : "dummy_sc",
-            "vshader" : "Shaders/dummy_sc.vert",
-            "fshader" : "Shaders/dummy_sc.frag",
-            "uniforms" : [ {"name" : "sc", "type" : "ufloat"} ],
-            "capabilities" : [ "sc" ] 
         }
     ],
     "lights" : [
@@ -125,11 +116,10 @@
             "switched" : 0
         }
     ],
-    "node" : {
-        "name" : "root",
-        "trfm" : [ { "trans" : [0, -10, -100] } ],
-        "shader" : "dummy_sc",
-        "children" : [
+    "node" : { "name" : "root",
+                "trfm" : [ { "trans" : [0, -10, -100] } ],
+                "shader" : "dummy_sc",
+                "children" : [
             {
                 "name" : "smooth",
                 "gObj" : "./obj/spheres/smooth.obj",

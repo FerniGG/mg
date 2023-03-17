@@ -210,6 +210,9 @@ void ShaderProgram::beforeDraw() {
 	this->send_uniform("scene_ambient", rs->getSceneAmbient());
 
 	int i = 0;
+	if (this->has_capability("sc")) {
+		this->send_uniform("sc", rs->getSc());
+	}
 	for(auto it = LightManager::instance()->begin(),
 			end = LightManager::instance()->end(); it != end; ++it) {
 		Light *theLight = *it;

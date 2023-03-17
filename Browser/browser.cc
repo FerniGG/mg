@@ -11,6 +11,7 @@
 static float step = 0.5; // advance/retreat step
 const static float angle_step = 1.0f * Constants::degree_to_rad; // angular step (rotations, etc)
 static int check_cull = 0;
+static float angle=0;
 // Animation settings
 // The time in milliseconds between timer ticks
 static int MG_TIMERMSECS = 33;
@@ -503,12 +504,12 @@ void animate(int value) {
 	int timeSincePrevFrame = currTime - prevTime;
 	int elapsedTime = currTime - startTime;
 	// ##### REPLACE WITH YOUR OWN GAME/APP MAIN CODE HERE #####
-	float angle=RenderState::instance()->getSc();
+	angle=RenderState::instance()->getSc();
 	if (runAnimation) {
-		if(cos(angle)==1.0){
+		if(cos(angle)>=1.0){
 			angle=0;
 		}else{
-			angle+=10;
+			angle+=0.5;
 		}
 		RenderState::instance()->setSc(cos(angle));
 
