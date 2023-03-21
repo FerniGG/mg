@@ -504,14 +504,15 @@ void animate(int value) {
 	int timeSincePrevFrame = currTime - prevTime;
 	int elapsedTime = currTime - startTime;
 	// ##### REPLACE WITH YOUR OWN GAME/APP MAIN CODE HERE #####
-	angle=RenderState::instance()->getSc();
+	//	angle=RenderState::instance()->getSc();
 	if (runAnimation) {
-		if(cos(angle)>=1.0){
-			angle=0;
+		angle+=0.05;
+		if(angle<=2*M_PI){
+			RenderState::instance()->setSc(abs(cos(angle)));
 		}else{
-			angle+=0.5;
+			angle=0;
+			RenderState::instance()->setSc(angle);
 		}
-		RenderState::instance()->setSc(cos(angle));
 
 		// Force a redisplay to render the new image
 		
