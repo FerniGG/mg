@@ -482,7 +482,16 @@ void Node::setCulled(bool culled) {
 
 void Node::frustumCull(Camera *cam) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	unsigned int *planes;
+	if (cam->checkFrustum(m_containerWC, 0)==1){	/*nodoa frustumaren kanpoan dagoen konprobatu*/
+		m_isCulled=true;
+	}else{	/*frustumaren kanpoan edo ebakitzen badu*/
+		m_isCulled=false;
+		this->draw();
+	}
+		for(auto & theChild : m_children) {
+			theChild->frustumCull(cam);// Recursive call
+		}
 	/* =================== END YOUR CODE HERE ====================== */
 }
 

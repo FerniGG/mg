@@ -307,7 +307,12 @@ int Camera::checkFrustum(const BBox *theBBox,
 						 unsigned int *planesBitM) {
 	int res = -1; // by default, BBOX fully inside
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	for(int i=0;i<MAX_CLIP_PLANES;i++) {
+		res = BBoxPlaneIntersect(theBBox,m_fPlanes[i]);
+		if(res==1){
+			return res;
+		}
+	}
 	/* =================== END YOUR CODE HERE ====================== */
 	return res; // BBox is fully inside the frustum
 }
