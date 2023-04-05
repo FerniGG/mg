@@ -32,6 +32,23 @@ attribute vec2 v_texCoord;
 varying vec4 f_color;
 varying vec2 f_texCoord;
 
+//Argi infinituak (directional)
+vec3 directional(int i){
+	vec4 n4=modelToCameraMatrix * vec4(v_normal, 0);
+	vec3 n = normalize(n4).xyz;
+	vec3 l = normalize(-theLights[i].position).xyz;
+	float angle = max(0,dot(n,l));
+	//barreiatua
+	vec3 idiff = theMaterial.diffuse * theLights[0].diffuse;
+
+}
+
+//Argi lokalak (local)
+
+//Spotlight argiak
+
+
+
 void main() {
 	gl_Position = modelToClipMatrix * vec4(v_position, 1);
 }
