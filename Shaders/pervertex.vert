@@ -40,7 +40,7 @@ vec3 directional(int i){
 	float angle = max(0,dot(n,l));
 	//barreiatua
 	vec3 idiff = theMaterial.diffuse * theLights[0].diffuse;
-
+	return idiff;
 }
 
 //Argi lokalak (local)

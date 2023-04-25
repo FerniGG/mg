@@ -175,10 +175,10 @@ void  Camera::lookAt(const Vector3 & E,
 					 const Vector3 & at,
 					 const Vector3 & up) {
 	/* =================== PUT YOUR CODE HERE ====================== */
-	Vector3 F=(E - at) / (E - at).length(); //e-at egin eta emaitza homogenizatu
-	Vector3 D=F;
-	Vector3 R=(up/up.length()).cross(D);
-	Vector3 U= D.cross(R);
+	m_E=E; //e-at egin eta emaitza homogenizatu
+	m_D=(m_E - at).normalize();
+	m_R=up.normalize().cross(m_D);
+	m_U= m_D.cross(m_R);
 
 	/* =================== END YOUR CODE HERE ====================== */
 	setViewTrfm();
@@ -310,7 +310,7 @@ int Camera::checkFrustum(const BBox *theBBox,
 	for(int i=0;i<MAX_CLIP_PLANES;i++) {
 		res = BBoxPlaneIntersect(theBBox,m_fPlanes[i]);
 		if(res==1){
-			return res;
+			return 1;
 		}
 	}
 	/* =================== END YOUR CODE HERE ====================== */
