@@ -34,17 +34,34 @@ varying vec2 f_texCoord;
 
 //Argi infinituak (directional)
 vec3 directional(int i){
-	vec4 n4=modelToCameraMatrix * vec4(v_normal, 0);
-	vec3 n = normalize(n4).xyz;
+	vec3 n=normalize(nmodelToCameraMatrix * vec4(v_normal, 0)).xyz;
+	vec3 v = normalize(-(modelToCameraMatrix * (vec4(v_position,1)))).xyz; /*erpinetik camera doan vec3 mod=1*/
 	vec3 l = normalize(-theLights[i].position).xyz;
+	vec3 r = 2*dot(l,n)*n - l;
 	float angle = max(0,dot(n,l));
 	//barreiatua
-	vec3 idiff = theMaterial.diffuse * theLights[0].diffuse;
-	return idiff;
+	vec3 idiff = theMaterial.diffuse * theLights[i].diffuse; //gero 0 a aldatu i-ra
+	//spekularra
+	vec3 ispec = pow(max(0, dot(r,v)),theMaterial.shininess)*theMaterial.specular * theLights[i].specular;
+	return angle*(idiff+ispec);//Itot[i]
 }
 
 //Argi lokalak (local)
-
+vec3 local(int i){
+	vec3 n=normalize(nmodelToCameraMatrix * vec4(v_normal, 0)).xyz;
+	vec3 v = normalize(-(modelToCameraMatrix * (vec4(v_position,1)))).xyz; /*erpinetik camera doan vec3 mod=1*/
+	vec3 p = (modelToCameraMatrix * (vec4(v_position,1))).xyz;	/*erpinaren posizioa*/
+	vec3 Spos_p = (theLights[i].position.xyz-p);	/*argiaren posizioa - P*/
+	vec3 l = normalize(Spos_p);
+	vec3 r = 2*dot(l,n)*n - l;
+	float angle = max(0,dot(n,l));
+	//barreiatua
+	vec3 idiff = theMaterial.diffuse * theLights[i].diffuse; //gero 0 a aldatu i-ra
+	//spekularra
+	vec3 ispec = pow(max(0, dot(r,v)),theMaterial.shininess)*theMaterial.specular * theLights[i].specular;
+	float d=1;
+	return d * angle*(idiff+ispec);//Itot[i]
+}
 //Spotlight argiak
 
 
