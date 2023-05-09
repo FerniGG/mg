@@ -88,7 +88,8 @@ void Light::placeScene(const Trfm3D & view, const Trfm3D & model) {
 	Trfm3D modelView = view * model; // this is the current modelview matrix
 
 	/* =================== PUT YOUR CODE HERE ====================== */
-
+	m_positionEye = modelView.transformVector(m_position);
+	m_spotDirectionEye = modelView.transformVector(m_spotDirection);
 	/* =================== END YOUR CODE HERE ====================== */
 }
 
