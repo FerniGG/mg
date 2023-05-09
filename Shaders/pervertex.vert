@@ -33,7 +33,7 @@ varying vec4 f_color;
 varying vec2 f_texCoord;
 
 //Argi infinituak (directional)
-vec3 directional(int i){
+vec3 directional_specularra(int i){
 	vec3 n=normalize(nmodelToCameraMatrix * vec4(v_normal, 0)).xyz;
 	vec3 v = normalize(-(modelToCameraMatrix * (vec4(v_position,1)))).xyz; /*erpinetik camera doan vec3 mod=1*/
 	vec3 l = normalize(-theLights[i].position).xyz;
@@ -45,9 +45,20 @@ vec3 directional(int i){
 	vec3 ispec = pow(max(0, dot(r,v)),theMaterial.shininess)*theMaterial.specular * theLights[i].specular;
 	return angle*(idiff+ispec);//Itot[i]
 }
-
+vec3 directional_barreiatua(int i){
+	vec3 n=normalize(nmodelToCameraMatrix * vec4(v_normal, 0)).xyz;
+	vec3 v = normalize(-(modelToCameraMatrix * (vec4(v_position,1)))).xyz; /*erpinetik camera doan vec3 mod=1*/
+	vec3 l = normalize(-theLights[i].position).xyz;
+	vec3 r = 2*dot(l,n)*n - l;
+	float angle = max(0,dot(n,l));
+	//barreiatua
+	vec3 idiff = theMaterial.diffuse * theLights[i].diffuse; //gero 0 a aldatu i-ra
+	//spekularra
+	vec3 ispec = pow(max(0, dot(r,v)),theMaterial.shininess)*theMaterial.specular * theLights[i].specular;
+	return angle*idiff;//Itot[i]
+}
 //Argi lokalak (local)
-vec3 local(int i){
+vec3 local_ahuldurekin(int i){
 	vec3 n=normalize(nmodelToCameraMatrix * vec4(v_normal, 0)).xyz;
 	vec3 v = normalize(-(modelToCameraMatrix * (vec4(v_position,1)))).xyz; /*erpinetik camera doan vec3 mod=1*/
 	vec3 p = (modelToCameraMatrix * (vec4(v_position,1))).xyz;	/*erpinaren posizioa*/
@@ -60,10 +71,37 @@ vec3 local(int i){
 	//spekularra
 	vec3 ispec = pow(max(0, dot(r,v)),theMaterial.shininess)*theMaterial.specular * theLights[i].specular;
 	float d=1;
+	float Sc = theLights[i].attenuation[0];
+	float Sl = theLights[i].attenuation[1];
+	float Sq = theLights[i].attenuation[2];
+	d=d/(Sc+Sl*length(Spos_p)+Sq*pow(length(Spos_p),2));
 	return d * angle*(idiff+ispec);//Itot[i]
 }
-//Spotlight argiak
 
+//Spotlight argiak
+vec3 Spotlight(int i){
+	vec3 n=normalize(nmodelToCameraMatrix * vec4(v_normal, 0)).xyz;
+	vec3 v = normalize(-(modelToCameraMatrix * (vec4(v_position,1)))).xyz; /*erpinetik camera doan vec3 mod=1*/
+	vec3 p = (modelToCameraMatrix * (vec4(v_position,1))).xyz;	/*erpinaren posizioa*/
+	vec3 Spos_p = (theLights[i].position.xyz-p);	/*argiaren posizioa - P*/
+	vec3 l = normalize(Spos_p);
+	vec3 r = 2*dot(l,n)*n - l;
+	float angle = max(0,dot(n,l));
+	//barreiatua
+	vec3 idiff = theMaterial.diffuse * theLights[i].diffuse; //gero 0 a aldatu i-ra
+	//spekularra
+	vec3 ispec = pow(max(0, dot(r,v)),theMaterial.shininess)*theMaterial.specular * theLights[i].specular;
+	
+	float cos_alpha=dot(-1*l,theLights[i].spotDir);
+	//spotlight
+	float C_spot = max((cos_alpha),0);
+	
+	if (cos_alpha<theLights[i].cosCutOff){	
+		C_spot=0;
+	}
+			
+	return pow(C_spot,theLights[i].exponent)*angle*(idiff+ispec);
+}
 
 
 void main() {
