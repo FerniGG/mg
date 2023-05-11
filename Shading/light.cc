@@ -88,7 +88,7 @@ void Light::placeScene(const Trfm3D & view, const Trfm3D & model) {
 	Trfm3D modelView = view * model; // this is the current modelview matrix
 
 	/* =================== PUT YOUR CODE HERE ====================== */
-	if (m_type==directional){
+		if (m_type==directional){
 		m_positionEye = modelView.transformVector(m_position);
 		m_positionEye.normalize();
 	}
