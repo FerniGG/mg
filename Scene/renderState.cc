@@ -22,7 +22,8 @@ RenderState::RenderState() :
 	m_backMaterial(0),
 	m_activeShader(0),
 	m_drawBBox(false),
-	m_sc(1.0f) {}
+	m_sc(1.0f),
+	m_cloudsOffset(1.0f) {}	/*cloudsoffset kontrolatzeko sortutako atributua*/
 
 float RenderState::getSc() const { return m_sc; }
 void RenderState::setSc(float v) { m_sc = v; }
@@ -219,6 +220,16 @@ void RenderState::setSceneAmbient(const Vector3 &rgb) {
 const Vector3 &RenderState::getSceneAmbient() const {
 	return m_ambient;
 }
+
+/////////////////////////////////////////////////
+//		Get set m_cloudsOffset
+	void RenderState::setm_cloudsOffset(float pCloudsOffset)
+	{
+		m_cloudsOffset = pCloudsOffset;
+	}
+	float RenderState::getm_cloudsOffset()const{
+		return m_cloudsOffset;
+	}
 
 void RenderState::print() const {
 	printf("* Stacks\n");

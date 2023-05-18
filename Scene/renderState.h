@@ -42,6 +42,10 @@ public:
 		texture,
 		modelview_projection
 	};
+	////////////////////////////////////////////
+	// 			Get set m_cloudsOffset
+	void setm_cloudsOffset(float val);
+	float getm_cloudsOffset() const;
 
 	float getSc() const;
 	void setSc(float v);
@@ -248,4 +252,7 @@ private:
 	// SkyBox
 
 	Node *m_skybox;
+
+	//m_cloudsOffset;
+	float m_cloudsOffset;
 };

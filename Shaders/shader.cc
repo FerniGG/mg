@@ -245,6 +245,7 @@ void ShaderProgram::beforeDraw() {
 	this->send_uniform("active_lights_n", i);
 
 	mat = rs->getFrontMaterial();
+
 	if (mat != 0) {
 		this->send_uniform("theMaterial.diffuse", mat->getDiffuse());
 		this->send_uniform("theMaterial.specular", mat->getSpecular());
@@ -262,6 +263,18 @@ void ShaderProgram::beforeDraw() {
 				// Set bump map in texture unit 'Constants::gl_texunits::bump'
 				tex->bindGLUnit(Constants::gl_texunits::bump);
 				this->send_uniform("bumpmap", Constants::gl_texunits::bump);
+			}
+		}
+		if (this->has_capability("sc")) {
+			this->send_uniform("sc", rs->getSc());
+		}
+		if (this->has_capability("multitex")) {		
+			Texture *tex2 = mat->getTexture(1);
+			if (tex2 != 0) {
+				// bumpMapping in texture unit 1
+				tex2->bindGLUnit(Constants::gl_texunits::rest);
+				this->send_uniform("texture1", Constants::gl_texunits::rest); 
+				this->send_uniform("uCloudOffset",rs->getm_cloudsOffset());	/* m_cloudsOffset balioa pasa shader ari*/
 			}
 		}
 	}

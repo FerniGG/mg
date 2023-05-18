@@ -11,7 +11,7 @@
 static float step = 0.5; // advance/retreat step
 const static float angle_step = 1.0f * Constants::degree_to_rad; // angular step (rotations, etc)
 static int check_cull = 0;
-static float angle=0;
+static float angle,p_cloudsOffset=0;
 // Animation settings
 // The time in milliseconds between timer ticks
 static int MG_TIMERMSECS = 33;
@@ -512,6 +512,12 @@ void animate(int value) {
 		}else{
 			angle=0;
 			RenderState::instance()->setSc(angle);
+		}
+
+		RenderState::instance()->setm_cloudsOffset(p_cloudsOffset);
+		p_cloudsOffset+=0.0025;
+		if (p_cloudsOffset > 2){	/*cloudsOffseten balioa aldatu*/
+			p_cloudsOffset=0;
 		}
 
 		// Force a redisplay to render the new image
