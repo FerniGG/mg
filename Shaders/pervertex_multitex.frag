@@ -13,8 +13,6 @@ void main() {
 	vec4 texColor_1;
 	vec4 texColor_Tot;
 
-	
-
 	//gl_FragColor = vec4(1.0);
 	vec2 f_texCoord_1 = vec2(f_texCoord[0]+uCloudOffset,f_texCoord[1]);	/*koord mugitu S ren norabide beran uCloudOffset-en funtzean*/
 
