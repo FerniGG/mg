@@ -123,11 +123,11 @@ void main() {
 	vec3 itot = scene_ambient;
 	for (int i=0; i<active_lights_n; i++){	/*piztutako argi kopuruaren arabera loop*/
 		if (theLights[i].position[3]==0){	/*puntu bat izan beharrena bektore bat du (x,y,z,0). Bakarrik norabidea duenez, argi direkzionala erabili*/
-			itot += vec3(directional(i));
+			itot += directional(i);
 		}else if(theLights[i].cosCutOff>0 && theLights[i].cosCutOff<90){ /*cosCutOff balio bat badu, spotlight argia erabiltzen ari gara*/
-			itot += vec3(spotlight(i));
+			itot += spotlight(i);
 		}else{
-			itot += vec3(local(i));
+			itot += local(i);
 		}
 	}
 	f_color=vec4(itot,1);
